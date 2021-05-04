@@ -1,0 +1,21 @@
+{
+  "builtins":[ {
+      "attrs":"", 
+      "author":"pcmacdon", 
+      "date":"2020-12-15", 
+      "hascode":true, 
+      "label":"Admin", 
+      "name":"admin", 
+      "requires":"", 
+      "title":"PDQ Admin-interface", 
+      "udata":"", 
+      "version":1.0008, 
+      "vuecomps":""
+    } ], 
+  "plugins":[], 
+  "projcode":"76942adb34820dd6975b0aabf39969eb3589d32a", 
+  "project":"PDQ-PLUGINS", 
+  "projparent":"https://jsish.org/afossil/pdq", 
+  "verjsireq":3.05, 
+  "version":1.0082
+}
