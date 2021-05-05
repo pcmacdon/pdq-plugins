@@ -1,7 +1,7 @@
 window.PdqConfigStr = `{
   "builtins":[ {
       "date":"2021-05-04", 
-      "enabled":false, 
+      "enabled":true, 
       "hide":false, 
       "name":"admin", 
       "uionly":false, 

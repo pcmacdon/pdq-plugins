@@ -257,6 +257,7 @@ function ConfGen() {
   jconf.status = {project:Pdq.project, projcode:Pdq.projcode};
   for (var i of dat) {
     var ip = (i.builtin ? jconf.builtins:jconf.plugins);
+    if (i.name == 'admin') i.enabled = true;
     ip.push({name:i.name, enabled:i.enabled, hide:i.hide, date:i.date, uionly:(i.uionly?true:false), vuecomps:i.vuecomps});
   }
   return jconf;
