@@ -6,8 +6,8 @@
   Vue.component("prism-editor", VuePrismEditor);
   Vue.use(VueMarkdownPdq);
   
-  function dputs() {}
-  //var dputs = console.log.bind(null);
+  //function dputs() {}
+  var dputs = console.log.bind(null);
   
   var Pdq = {
     Plugins:{},
@@ -1173,6 +1173,7 @@
         console.warn('duplicate plugin conf', n);
       Pdq.plugConf[n] = piAll[i];
       if (!en) {
+        dputs('disabled:',n);
         plRegs--;
         continue;
       }

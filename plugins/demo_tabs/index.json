@@ -1,0 +1,15 @@
+{
+  "content":{
+    "author":"pcmacdon", 
+    "date":"2020-12-15", 
+    "dlfrom":"/var/www/fossil/pdq-plugins.fossil", 
+    "dltime":"2021-02-17 09:09:44", 
+    "label":"Demo", 
+    "name":"demo_tabs", 
+    "requires":"pdq-1.0,jsish-3.4.8", 
+    "title":"PDQ Demo", 
+    "udata":"", 
+    "version":1.1007, 
+    "vuecomps":""
+  }
+}

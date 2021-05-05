@@ -1,0 +1,58 @@
+{
+ "content":{
+  "author":"pcmacdon", 
+  "date":"2020-12-15", 
+  "dlfrom":"https://jsish.org/afossil/pdq-plugins", 
+  "dltime":"2020-12-23 14:21:12", 
+  "label":"Posts", 
+  "name":"posts", 
+  "requires":"pdq-1.0,jsish-3.4.8", 
+  "title":"PDQ Posts interface", 
+  "udata":"", 
+  "version":1.0005,
+  "vuecomps":""
+ }, 
+ "fields":{
+  "args":[], 
+  "author":"", 
+  "categories":"", 
+  "clicked":0, 
+  "content":{}, 
+  "date":"", 
+  "dislikes":0, 
+  "editcnt":0, 
+  "extra":{}, 
+  "groupids":"", 
+  "likes":0, 
+  "other":null, 
+  "permalink":"", 
+  "status":"", 
+  "tags":"", 
+  "text":"", 
+  "timestamp":"", 
+  "timeupdated":"", 
+  "title":"", 
+  "type":"md", 
+  "viewcnt":0, 
+  "visibility":"public"
+ }, 
+ "queries":{
+  "Delete":{
+   "op":"removen"
+  }, 
+  "Fetch":{
+   "op":"select1"
+  }, 
+  "Index":{
+   "excludes":[ "text", "content" ], 
+   "filtfield":"title", 
+   "op":"select"
+  }, 
+  "Post":{
+   "op":"insert1"
+  }, 
+  "Save":{
+   "op":"update1"
+  }
+ }
+}

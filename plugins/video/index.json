@@ -1,0 +1,27 @@
+{
+ "content":{
+  "author":"pcmacdon", 
+  "date":"2020-12-13", 
+  "dlfrom":"https://jsish.org/afossil/pdq-plugins", 
+  "dltime":"2020-12-23 14:21:06", 
+  "label":"Video", 
+  "name":"video", 
+  "requires":"pdq-1.0.24,jsish-3.4.8", 
+  "title":"Pdq Video", 
+  "udata":"", 
+  "version":1.0008,
+  "vuecomps":""
+ }, 
+ "fields":{
+  "currentTime":-1, 
+  "duration":-1, 
+  "firstTime":"", 
+  "lastTime":"", 
+  "note":"", 
+  "path":"", 
+  "site":"", 
+  "tags":"", 
+  "userid":"", 
+  "viewCnt":0
+ }
+}

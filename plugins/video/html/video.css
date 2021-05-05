@@ -1,0 +1,40 @@
+video[poster]{
+    object-fit:initial;
+}
+
+.pie {
+    width: 1em;
+    height: 1em;
+    display: block;
+    border-radius: 50%;
+    background-color: black;
+    border: 1px solid black;
+    float: left;
+}
+
+.ten {
+    background-image:
+        linear-gradient(126deg, transparent 50%, white 50%),
+        linear-gradient(90deg, white 50%, transparent 50%);
+}
+
+.twentyfive {
+    background-image:
+        linear-gradient(180deg, transparent 50%, white 50%),
+        linear-gradient(90deg, white 50%, transparent 50%);
+}
+
+.fifty {
+    background-image:
+        linear-gradient(90deg, white 50%, transparent 50%);
+}
+
+.seventyfive {
+    background-image:
+        linear-gradient(180deg, transparent 50%, black 50%),
+        linear-gradient(90deg, white 50%, transparent 50%);
+}
+
+.onehundred {
+    background-image: none;
+}

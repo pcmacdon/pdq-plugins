@@ -1,0 +1,174 @@
+export default {
+  
+// A Pdq plugin using browser to watch videos.  Alternative shortcomings:
+/*
+ * KODI: Server crashes randomly, high cpu/ram usage, UI is laggy, awkward and has
+ *     limited configurability,  poor net-reconnect recovery, captions tend to drift,
+ *     client hangs on desktop-switch:have to maually kill it.
+ * VLC:  goes zombie on exit with stuck-loop msg "too many jobs", no persistent bookmarks,
+ *     no viewed history, is lightweight but has limited configurability,
+ *     can easily be destabilized by changing config settings.
+ */
+
+  data: {
+    execCodes:[],
+    resMapList:null,
+  },
+
+  messages: {
+    list: {
+      
+       /* WebDir: function(_msg:object, dir:string, filter:string, max:number) {
+        var rcmd = this.$pdqResp;
+        function dirDone(id, res, isError) {
+          var rv = {rows:JSON.parse(res.response)};
+          rcmd(_msg, rv);
+        }
+        LogTrace('TODO: unfinished');
+        Wget('http://media.local/video/', {O:'.', nowait:true,
+           onDone:(sid,res,isError) => dirDone(_msg.id,res,isError) });
+      },*/
+    
+      Dir: function(_msg:object, dir:string, filter:string, max:number, site:string) {
+        var ldir = site+dir;
+        if (filter == '') filter = '*';
+        else if (filter.indexOf('*')<0)
+          filter = '*'+filter+'*';
+        var rr = {retInfo:true, dir:ldir};
+        if (max>0) rr.limit = max;
+        var rows = File.glob(filter, rr);
+        var rv = { file:true, rows:rows};
+        this.$pdqResp(_msg, rv);
+      },
+    
+      RecsInDir: function(_msg:object, path:string, site:string) {
+        var ppath = path.map(['%','%%']) + '/%';
+        var info = Pdq.db.query('SELECT rowid,* FROM pdq_Video'
+          +' WHERE userid = $Pdq(userid) AND site == @site AND path LIKE @ppath');
+        LogDebug("RECSINDIR:", info.length, ':', Pdq.userid, ':', site, '/', ',', ppath);
+        if (info.length)
+          this.$pdqResp(_msg, {info:info});
+      }
+    },
+  
+    play: {
+      
+      RunInVLC: function(_msg:object, path:string, site:string) {
+        var url = site + encodeURI(path);
+        if (!resMapList) {
+          function resMap(res) {
+            var x = [];
+            for (var i=0; i<res.length; i++)
+              x.push(res[i], encodeURI(res[i]));
+            return x;
+          }
+          var resMapList = resMap("<>|;&$`=[]'\' \t");
+        }
+        url = url.map(resMapList);
+        var code = exec('vlc '+url+'&');
+        //var code = exec('ffplay '+url+'&');
+        this.data.execCodes.push(code);
+      },
+    
+      VideoInfo(_msg:object, path:string, site:string) {
+        var url = site + encodeURI(path);
+        //url = url.map(this.resMapList);
+        url = url.map(['%2f', '/', '+', ' ']);
+        var res = exec("ffmpeg -i '"+url+"' 2>&1", {noError:true});
+        //this.data.execCodes.push(code);
+        if (!res) res = '';
+        this.$pdqResp(_msg, {res:res});
+      },
+      
+      LoadCaptions(_msg:object, path:string, site:string) {
+        var rcmd = this.$pdqResp;
+        function dirDone(id, res, isError) {
+          var rv = {data:res.response};
+          rcmd(_msg, rv);
+        }
+        var url = site + path;
+        Wget(url, {O:'.', nowait:true,
+           onDone:(sid,res,isError) => dirDone(_msg.id,res,isError) });
+      },
+    
+      LoadVideo(_msg:object, path:string, site:string) {
+        var info = Pdq.db.query('SELECT rowid,* FROM  pdq_Video'
+        +' WHERE userid = $Pdq(userid) AND site = @site AND path = @path');
+        this.$pdqResp(_msg, {info:info.length?info[0]:{}});
+      },
+    
+      UpdatePos(_msg:object, currentTime:number, duration:number, path:string, site:string) {
+        var m = _msg.data;
+        var now = strftime(null);
+        m.userid = Pdq.userid;
+        var rowid = Pdq.db.onecolumn('SELECT rowid FROM  pdq_Video'
+          +' WHERE userid = $m(userid) AND site = @site AND path = @path');
+        if (!rowid) {
+          m.firstTime = now;
+          m.viewCnt = 1;
+          Pdq.db.query('INSERT INTO pdq_Video %v', 'm');
+        } else {
+          Pdq.db.query('UPDATE pdq_Video SET currentTime = @currentTime, '
+            + 'lastTime = @now, viewCnt = viewCnt+1 WHERE rowid = @rowid');
+        }
+      },
+      
+      UpdateVals(_msg:object, m:object) {
+        m.userid = Pdq.userid;
+        var rowid = Pdq.db.onecolumn('SELECT rowid FROM  pdq_Video'
+          +' WHERE userid = $m(userid) AND site = $m(site) AND path = $m(path)');
+        if (!rowid)
+          Pdq.db.query('INSERT INTO pdq_Video %v', 'm');
+        else {
+          Pdq.db.query('UPDATE pdq_Video %v WHERE rowid = @rowid',
+            {obj:{Var:m, skip:['site','path','userid','rowid']}});
+        }
+      },
+    
+    },
+    
+    history: {
+      List: function (_msg:object, filter:string, max:number, page:number, site:string, sortBy:string, sortDesc:boolean) {
+        var o = _msg.data;
+        var fq = '', q = 'SELECT rowid,* FROM pdq_Video';
+        //var filter = o.filter;
+        if (filter.length) {
+          if (filter[0] === '"' && filter[filter.length-1] == '"') {
+            filter = filter.substr(1,filter.length-2);
+            fq = ' WHERE path = @filter';
+          } else if (filter[0] === '/' && filter[filter.length-1] == '/') {
+            filter = filter.substr(1,filter.length-2);
+            fq = ' WHERE path REGEXP @filter';
+          } else if (filter.indexOf('*')>=0) {
+            fq = ' WHERE path GLOB @filter';
+          } else if (filter.indexOf('%')>=0) {
+            fq = ' WHERE path LIKE @filter';
+          } else {
+            var ofilter = filter;
+            filter =  "%" + filter + "%";
+            fq = ' WHERE path LIKE @filter';
+          }
+          q += fq;
+        }
+        var xq = ((fq===''?' WHERE ':' AND ')+' userid = $Pdq(userid) AND site = $o(site)');
+        q += xq;
+        if (sortBy.length) {
+          q += ' ORDER BY '+ sortBy;
+          if (sortDesc)
+            q += ' DESC';
+        }
+        if (max)
+          q += ' LIMIT ' + max + ' OFFSET ' +((page-1)*max);
+        LogDebug('Q=',q);
+        var rows = Pdq.db.query(q);
+        var cnt = Pdq.db.onecolumn('SELECT count(*) FROM pdq_Video'+fq+xq);
+        this.$pdqResp(_msg, {cnt:cnt, rows:rows});
+      },
+    },
+    
+  }
+}
+
+
+
+

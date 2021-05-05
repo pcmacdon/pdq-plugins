@@ -1,0 +1,12 @@
+var dat = File.read('demo_a.vue.js');
+var re = /\bPdq\.(plugin|component|subcomponent)\(\"([a-zA-Z0-9_]+)/g;
+var newName = 'doggy_do', name = 'demo_a';
+
+dat = dat.replace(re, function(str, p1, p2,...) {
+  //puts('SS', str);
+  var len = str.length-name.length;
+  var ret = str.substr(0,len) + newName;
+  puts('RR:', p1, p2, str, ' = ', ret);
+  return ret;
+});
+//puts(dat)

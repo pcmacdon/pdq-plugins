@@ -97,7 +97,7 @@ function loadOne(n, bi, dd) {
     pinfo.builtin = (bi==1);
     pinfo.hascode = File.exists(fn+'.jsi');
     if (!ddv) {
-      if (!pinfo.hascode)
+      if (!pinfo.hascode || n=='admin')
         pinfo.enabled = true;
       ddv = dbInsert(pinfo);
       if (dd)
