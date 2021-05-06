@@ -8,18 +8,18 @@
   </div>
 `
 ,
- data:function() {
+ data:function data() {
     return {
       text:'', title:'',
     };
   },
- mounted:function() {
+ mounted:function mounted() {
     this.text = '';
     this.title = '';
   },
   methods: {
-   $pdqbreak: function() {debugger;},
-   Done:function() {
+   $pdqBreak:function $pdqBreak() {debugger;},
+   Done:function Done() {
       var m = {text:this.text,title:this.title};
       m.timestamp = m.timeupdated = new Date().toISOString();
       m.author = this.s_t_username;

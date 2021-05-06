@@ -107,7 +107,7 @@
 `
 ,
   props: {path:{type:String, default:''} },
-  data:function() {
+  data:function  data() {
     var opts = {
       useSubs:true,
       fpath:null, epath:null,
@@ -161,7 +161,7 @@
     opts.keyItems.forEach(function (f) { opts.keyTbl[f.key]=f.cmd; });
     return opts; 
   },
-  mounted:function() {
+  mounted:function  mounted() {
     this.metaLoaded = false;
     this.text = '';
     this.progCnt = 0;
@@ -171,11 +171,11 @@
     v.focus();
     this.doLoadFile(this.$route.params.path);
   },
-  beforeRouteUpdate:function(to, from, next) {
+  beforeRouteUpdate:function  beforeRouteUpdate(to, from, next) {
     this.doLoadFile(to.params.path);
     next();
   },
-  beforeRouteLeave:function(to, from, next) {
+  beforeRouteLeave:function  beforeRouteLeave(to, from, next) {
     var ismod = this.docModified;
     this.nextlink = to;
     if (!ismod)
@@ -186,18 +186,18 @@
   },
   methods: {
     $pdqBreak:function  $pdqBreak() {debugger;},
-    dputs:function() {
+    dputs:function  dputs() {
     },
-    keyRegen:function() {
+    keyRegen:function  keyRegen() {
       var keyTbl = {};
       this.keyItems.forEach(function(f) { keyTbl[f.key]=f.cmd; }); 
       this.keyTbl = keyTbl;
     },
-    settingsHidden:function() {
+    settingsHidden:function  settingsHidden() {
       var v = this.$refs.myvid;
       setTimeout(function () { v.focus(); }, 500);
     },
-    CtlOp:function(key) {
+    CtlOp:function  CtlOp(key) {
       var i, v = this.$refs.myvid;
       switch (key) {
         case 'help': this.showHelp = true; break;
@@ -251,7 +251,7 @@
           break;
       }
     },
-    subttlSet:function(on) {
+    subttlSet:function  subttlSet(on) {
       var want, v = this.$refs.myvid;
       if (!v || !v.textTracks || !v.textTracks.length) return this.s_Subtitles;
       if (on === undefined) want = (v.textTracks[0].mode=='showing'?'hidden':'showing');
@@ -260,7 +260,7 @@
         v.textTracks[0].mode = want;
       return (want=='showing'?true:false);
     },
-    volAdjust:function(amt) {
+    volAdjust:function  volAdjust(amt) {
       var v = this.$refs.myvid;
       this.Volume = (v.volume + amt);
       if (this.Volume>1) this.Volume = 1;
@@ -268,20 +268,20 @@
       v.volume = this.Volume;
       this.dputs("VOL:", this.Volume);
     },
-    Key:function(event) {
+    Key:function  Key(event) {
       var key = event.key;
       var v = this.$refs.myvid;
       var op = this.keyTbl[key];
       if (op)
         this.CtlOp(op);
     },
-    updatePos:function(pos, len) {
+    updatePos:function  updatePos(pos, len) {
       if (!isNaN(len) && len !== null) {
         this.dputs("SEND UpdatePos", len);
         this.$pdqSend('UpdatePos', {duration:len, currentTime:pos, site:this.v_Site, path:this.fpath});
       }
     },
-    EV:function(ev) {
+    EV:function  EV(ev) {
       var key = ev.type;
       this.dputs("EV", key);
       var v = this.$refs.myvid;
@@ -309,7 +309,7 @@
         default: console.warn('unknown EV', key);
       }
     },
-    vidInfoSet:function(val) {
+    vidInfoSet:function  vidInfoSet(val) {
       var v = this.$refs.myvid;
       this.dputs("SET TIME", val.currentTime);   
       if (val.currentTime !== undefined)
@@ -319,7 +319,7 @@
       //if (this.Autoplay === true)
         //v.play();
     },
-    doLoadFile:function(path) {
+    doLoadFile:function  doLoadFile(path) {
       if (!path)
         this.fpath = null;
       else {
@@ -361,22 +361,22 @@
             
       }
     },
-    doIndent:function(event) {
+    doIndent:function  doIndent(event) {
       var nv = IndentSel( event);
       if (nv)
         this.text = nv;
     },
-    Progress:function() {
+    Progress:function  Progress() {
       this.progCnt++;;
     },
-    changed:function(event) {
+    changed:function  changed(event) {
       //this.text2 = event.target.innerHTML.trim();
     },
-    doAbort:function() {
+    doAbort:function  doAbort() {
       this.ismodified = false;
       this.$router.push(this.nextlink);
     },
-    Dlg:function(op) {
+    Dlg:function  Dlg(op) {
       this.showModDialog = false;
       switch (op) {
         case 'save':
@@ -389,21 +389,21 @@
         default: console.warn('unknown op: '+op);
       }
     },
-    RunInVLC:function() {
+    RunInVLC:function  RunInVLC() {
       if (this.Vurl == '')
         this.$bvToast.toast('empty url');
       else
         this.$pdqSend('RunInVLC', {site:this.v_Site, path:encodeURI(this.fpath)});
     },
-    failLoad:function(e) {
+    failLoad:function  failLoad(e) {
       if (!this.v_Site) return;
       this.$bvToast.toast('Video error: try VLC', { title: 'Video', autoHideDelay: 3000 });
     },
-    failTrack:function(e) {
+    failTrack:function  failTrack(e) {
       this.$bvToast.toast('Video track error:', { title: 'Track', autoHideDelay: 3000 });
       //this.RunInVLC();
     },
-    sitePush:function() {
+    sitePush:function  sitePush() {
       if (!this.v_Site || !this.fpath)
         return;
       this.Vurl = this.v_Site + this.fpath; 
@@ -464,19 +464,19 @@
     },
   },
   computed: {
-    docModified:function() {
+    docModified:function  docModified() {
       if (this.ismodified)
         return true;
       return false;
     },
-    vtype:function() {
+    vtype:function  vtype() {
       if (!this.fpath) return "";
       var vtl = this.fpath.split('.');
       var vte = vtl[vtl.length-1];
       if (vte == 'mkv') vte = 'mpg';
       return "video/"+vte;
     },
-    Poster:function() {
+    Poster:function  Poster() {
       return "images/loading.jpg";
     },
   },
@@ -507,11 +507,11 @@
       this.videoInfo = val;
       this.vidInfoSet(val);
     },
-    PlaybackRate:function() {
+    PlaybackRate:function  PlaybackRate() {
       var v = this.$refs.myvid;
       v.playbackRate = this.PlaybackRate;
     },
-    text:function(val) {
+    text:function  text(val) {
       if (this.text === '')
         return;
     },

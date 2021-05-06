@@ -15,11 +15,11 @@
   </div>
 `
 ,
-  data:function() { 
+  data:function data() { 
     return { };
   },
   methods: {
-   $pdqbreak: function() {debugger;},
+   $pdqBreak:function $pdqBreak() {debugger;},
   },
 
 });

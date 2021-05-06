@@ -71,7 +71,7 @@
   </div>
 `
 ,
-  data: function() {
+  data: function data() {
     return {
       rows:[], totalRows:0,
       show:false,
@@ -98,37 +98,37 @@
     };
   },
   watch: {
-    currentPage:  function(val) { this.doListPost(); },
-    sortDesc:     function(val) { this.doListPost(); },
-    sortBy:     function(val) { this.doListPost(); },
-    v_t_rowsPerPage:    function(val) { this.doListPost(); },
-    filter: function(val) {
+    currentPage:  function currentPage(val) { this.doListPost(); },
+    sortDesc:     function sortDesc(val) { this.doListPost(); },
+    sortBy:     function sortBy(val) { this.doListPost(); },
+    v_t_rowsPerPage:    function v_t_rowsPerPage(val) { this.doListPost(); },
+    filter: function filter(val) {
       if (!this.filter.length)
         this.doListPost();
     },
-    s_updated: function(val) {
+    s_updated: function s_updated(val) {
       if (!val) return;
       this.doListPost();
     },
-    t_data: function(val) {
+    t_data: function t_data(val) {
       this.rows = val.rows;
       this.totalRows = val.cnt;
     },
   },
-  mounted: function() {
+  mounted: function mounted() {
     this.showModDialog = false;
     this.doListPost();
   },
   methods: {
     $pdqBreak:function() {debugger;},
-    doFilter: function() {
+    doFilter: function doFilter() {
       this.doListPost();
     },
-    doListPost: function() {
+    doListPost: function doListPost() {
       this.$pdqSend('Index', {max:this.v_t_rowsPerPage, page:this.currentPage,
         filter:this.filter, orderby:this.sortBy, orderdesc:this.sortDesc});
     },
-    Apply: function() {
+    Apply: function Apply() {
       var call = [];
       for (var i in this.rows) {
         var it = this.rows[i];
@@ -138,16 +138,16 @@
       this.applyLst = call;
       this.showModDialog = true;
     },
-    doApply: function() {
+    doApply: function doApply() {
       switch (this.bulkAction) {
         case 'Delete':
           this.$pdqSend('Delete', {rowids:this.applyLst});
           break;
       }
     },
-    Filter: function() {
+    Filter: function Filter() {
     },
-    selectAll: function(on) {
+    selectAll: function selectAll(on) {
       if (!on) {
         this.checkedNames = [];
       } else {
@@ -157,7 +157,7 @@
         this.checkedNames = call;
       }
     },
-    getTitle: function(row) {
+    getTitle: function getTitle(row) {
       if (!row.timestamp)
         return '';
       return row.timestamp+' UTC: Update=' + row.timeupdated;

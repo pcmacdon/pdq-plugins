@@ -83,7 +83,7 @@
   </div>
 `
 ,
- data:function() {
+ data:function data() {
     return {
       show:false,
       currentPage:1, perPage:5,
@@ -109,31 +109,31 @@
     };
   },
   watch: {
-   currentPage:function(val) { this.doListHist(); },
-   sortDesc:function(val) { this.doListHist(); },
-   sortBy:function(val) { this.doListHist(); },
-   perPage:function(val) { this.doListHist(); },
-   forceList:function(val) { this.doListHist(); },
-   filter:function(val) {
+   currentPage:function currentPage(val) { this.doListHist(); },
+   sortDesc:function sortDesc(val) { this.doListHist(); },
+   sortBy:function sortBy(val) { this.doListHist(); },
+   perPage:function perPage(val) { this.doListHist(); },
+   forceList:function forceList(val) { this.doListHist(); },
+   filter:function filter(val) {
       if (!this.filter.length)
         this.doListHist();
     },
   },
- mounted:function() {
+ mounted:function mounted() {
     this.showModDialog = false;
     this.doListHist();
   },
   methods: {
-   $pdqbreak: function() {debugger;},
-   doFilter:function() {
+   $pdqBreak:function $pdqBreak() {debugger;},
+   doFilter:function doFilter() {
       this.doListHist();
     },
-   doListHist:function() {
+   doListHist:function doListHist() {
       if (this.v_Site)
         this.$pdqSend('List', {max:this.perPage, page:this.currentPage,
           filter:this.filter, sortBy:this.sortBy, sortDesc:this.sortDesc, site:this.v_Site});
     },
-   Apply:function() {
+   Apply:function Apply() {
       var call = [], rows = this.s_historyRows;
       for (var i in rows) {
         var it = rows[i];
@@ -143,12 +143,12 @@
       this.applyLst = call;
       this.showModDialog = true;
     },
-   doApply:function() {
+   doApply:function doApply() {
       this.$pdqSend('Apply', {op:this.bulkAction,rowids:this.applyLst});
     },
-   Filter:function() {
+   Filter:function Filter() {
     },
-   selectAll:function(on) {
+   selectAll:function selectAll(on) {
       if (!on) {
         this.checkedNames = [];
       } else {
@@ -158,7 +158,7 @@
         this.checkedNames = call;
       }
     },
-   getTitle:function(row) {
+   getTitle:function getTitle(row) {
       if (!row.timestamp)
         return '';
       return row.timestamp+' UTC: Update=' + row.timeupdated;

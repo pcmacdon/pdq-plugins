@@ -56,7 +56,7 @@
   </b-container>
 `
 ,
-  data:function() { 
+  data:function data() { 
     return {
       curRowId:-1, 
       awaitingTitle:null, markdown:'',
@@ -70,12 +70,12 @@
     };
   },
   props:['rowid'],
-  created:function() {
+  created:function created() {
   },
-  beforeDestroy:function() {
+  beforeDestroy:function beforeDestroy() {
     this.s1.removeEventListener('scroll', this.s1);
   },
-  mounted:function() {
+  mounted:function mounted() {
     this.text = this.title = '';
     this.showModDialog = this.ismodified = false;
     this.awaitingTitle = null;
@@ -90,14 +90,14 @@
     s2.addEventListener('scroll', this.select_scroll_2, false);
   },
   computed: {
-    docModified:function() {
+    docModified:function docModified() {
       if (this.ismodified)
         return true;
       return false;
     },
   },
   methods: {
-    $pdqBreak:function() {debugger;},
+    $pdqBreak:function pdqBreak() {debugger;},
     insertAtCursor: function (input, textToInsert, del) {
       input.focus();
       if (del)
@@ -120,15 +120,15 @@
     
     select_scroll_1:function select_scroll_1(e) { if (this.sync) this.s2.scrollTop = this.s1.scrollTop; },
     select_scroll_2:function select_scroll_2(e) { if (this.sync) this.s1.scrollTop = this.s2.scrollTop; },
-    tocRendered:function() {
+    tocRendered:function tocRendered() {
       return;
     },
-    Save:function() {
+    Save:function Save() {
       var m = {text:this.text, title:this.title,rowid:this.curRowId};
       m.timeupdated = new Date().toISOString();
       this.$pdqSend('Save', {data:m});
     },
-    editOp:function(t) {
+    editOp:function editOp(t) {
       var qp = '', id = this.$refs.viewer;
       var s = id.selectionStart, f = id.selectionEnd;
       if (s === undefined || f === undefined) return;
@@ -173,14 +173,14 @@
       this.ismodified = true;
       return;
     },
-    changed:function(event) {
+    changed:function changed(event) {
       //this.text2 = event.target.innerHTML.trim();
     },
-    doAbort:function() {
+    doAbort:function doAbort() {
       this.ismodified = false;
       this.$router.push(this.nextlink);
     },
-    Dlg:function(op) {
+    Dlg:function Dlg(op) {
       this.showModDialog = false;
       switch (op) {
         case 'save':
@@ -205,7 +205,7 @@
     },
   },
   
-  beforeRouteLeave:function(to, from, next) {
+  beforeRouteLeave:function beforeRouteLeave(to, from, next) {
     var ismod = this.docModified;
     this.nextlink = to;
     if (!ismod)

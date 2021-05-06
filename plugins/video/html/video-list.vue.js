@@ -112,7 +112,7 @@
 `
 ,
   props:{ indir:{type:String, default:''} },
- data:function() {
+ data:function data() {
     return {
       rows:[], totalRows:0,
       list_tbl:'',
@@ -150,12 +150,12 @@
       //navFromPath:null,
     };
   },
- mounted:function() {
+ mounted:function mounted() {
     this.showModDialog = false;
     this.list_tbl = this.$refs.list_tbl.toString();
     this.ListFilesSet(this.$route.params.indir);
   },
- beforeRouteUpdate:function(to, from, next) {
+ beforeRouteUpdate:function beforeRouteUpdate(to, from, next) {
     this.ListFilesSet(to.params.indir);
     next();
   },
@@ -211,16 +211,16 @@
     },
   },
   methods: {
-   $pdqbreak: function() {debugger;},
-   dputs:function() {
+   $pdqBreak:function $pdqBreak() {debugger;},
+   dputs:function dputs() {
     },
-   sitePush:function() {
+   sitePush:function sitePush() {
       if (this.s_dir != '')
         this.$pdqPush('List/');
       else
         this.ListFilesDo();
     },
-   delSite:function() {
+   delSite:function delSite() {
       var tt = {title:'Site Add', autoHideDelay: 3000, variant:'success'};
       var sind = this.s_listOfSites.indexOf(this.v_Site);
       var msg;
@@ -239,7 +239,7 @@
       this.$bvToast.toast(msg, tt);
       
     },
-   addSite:function() {
+   addSite:function addSite() {
       this.dputs("ADD SITE", this.newSite);
       var ns = this.newSite, msg;
       if (ns == '')
@@ -258,8 +258,8 @@
       }
       this.$bvToast.toast(msg, tt);
     },
-   Back:function() { console.warn("BACK unimpl"); },
-   Apply:function() {
+   Back:function Back() { console.warn("BACK unimpl"); },
+   Apply:function Apply() {
       var call = [], rows = this.s_listRows;
       for (var i in rows) {
         var it = rows[i];
@@ -269,10 +269,10 @@
       this.applyLst = call;
       this.showModDialog = true;
     },
-   ApplyDo:function() {
+   ApplyDo:function ApplyDo() {
       this.$pdqSend('Apply', {op:this.bulkAction,names:this.applyLst});
     },
-   fileAction:function(item) {
+   fileAction:function fileAction(item) {
       var dir = this.s_dir, ldir = dir + (dir?'/':'') + item.name;
       var epath = encodeURIComponent(ldir);
       if (this.isDir(item)) {
@@ -299,7 +299,7 @@
       }
       this.$pdqPush('play/'+epath);
     },
-   filterFunc:function(item, pat) {
+   filterFunc:function filterFunc(item, pat) {
       // TODO: search caseless.
       var base = item.name, lpat = pat.toLowerCase(), lbase = base.toLowerCase();
       if (lpat == pat) base = lbase;
@@ -321,13 +321,13 @@
 
       return (pat == '' || lbase.indexOf(lpat)>=0);
     },
-   FilterDo:function() {
+   FilterDo:function FilterDo() {
       this.ListFilesDo();
     },
-   Filter:function(lst) {
+   Filter:function Filter(lst) {
       this.totalRows = lst.length;
     },
-   getFPrefix:function(data) {
+   getFPrefix:function getFPrefix(data) {
       switch (data.type) {
         case 'directory': return '/'; break;
         case 'pipe': return '|'; break;
@@ -336,38 +336,38 @@
       }
       return '*';
     },
-   getFname:function(val, key, data) {
+   getFname:function getFname(val, key, data) {
       return data.name+this.getFPrefix(data);
     },
-   getDate:function(val) {
+   getDate:function getDate(val) {
       var d = new Date((typeof val === 'string')?val:val*1000);
       var n = d.toISOString().split('T')[0];
       return n + ' ' + d.toTimeString().split(' ')[0];
     },
-   getStateStyle:function(item) {
+   getStateStyle:function getStateStyle(item) {
       return 'color:black';
     },
-   getTitle:function(row) {
+   getTitle:function getTitle(row) {
       if (!row.timestamp)
         return '';
       return row.timestamp+' UTC: Update=' + row.timeupdated;
     },
-   isDir:function(data) {
+   isDir:function isDir(data) {
       return (data.type === 'directory');
     },
-   ListFilesDo:function() {
+   ListFilesDo:function ListFilesDo() {
       var s = this.$route.meta.data;
       this.rows = [];
       if (this.v_Site != '')
         this.ListIndex(0, this.filterGet, this.s_dir, this.v_Site);
     },
-   ListFilesSet:function(dir) {
+   ListFilesSet:function ListFilesSet(dir) {
       dir = (dir?decodeURIComponent(dir):'');
       this.update_s_dir(dir);
       this.ListFilesDo();
 
     },
-   selectAll:function(on) {
+   selectAll:function selectAll(on) {
       if (!on) {
         this.checkedNames = [];
       } else {
@@ -377,7 +377,7 @@
         this.checkedNames = call;
       }
     },
-   getViewedClass:function(n) {
+   getViewedClass:function getViewedClass(n) {
       var rows = this.s_listRows;
       if (!rows[n]) return;
       if (!rows[n].state) return '';
@@ -394,7 +394,7 @@
         return c + ' seventyfive';
       return c + ' onehundred';
     },
-   ListIndex:function(max, filter, dir, site) {
+   ListIndex:function ListIndex(max, filter, dir, site) {
       if (site && site.substr(0,7) === 'file://') {
         this.$pdqSend('Dir', {max:max, filter:filter, dir:dir, site:site.slice(7)});
         return;
@@ -466,29 +466,29 @@ Pdq.subcomponent("pdq-video-list-detail", { template:`
 `
 ,
   props:['item', 'sclass'],
- data:function() { return {}; },
+ data:function data() { return {}; },
   methods: {
-   popOverFn:function() {
+   popOverFn:function popOverFn() {
       var that = this;
       return function() {
         return that.$refs.popTarg;
       };
     },
-   viewedTime:function(item) {
+   viewedTime:function viewedTime(item) {
       return new Date(item.state.currentTime * 1000).toISOString().substr(11, 8) + ' of '
          + new Date(item.state.duration * 1000).toISOString().substr(11, 8);
     },
-   getRel:function() {
+   getRel:function getRel() {
       var s = this.item.state;
       var rel = 1.0-(s.duration-s.currentTime)/s.duration;
       return ''+Math.round(rel*100)+'%';
     },
-   stateStyle:function(n) {
+   stateStyle:function stateStyle(n) {
       var rows = this.s_listRows;
       if (rows[n].group)
         return "font-size:18px;";
     },
-   stateViewed:function(n) {
+   stateViewed:function stateViewed(n) {
       var rows = this.s_listRows;
       var c = {
         v100:'&#9679;', v50:'&#9680;',

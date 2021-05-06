@@ -122,7 +122,7 @@
   </b-container>
 `
 ,
- data:function() {
+ data:function data() {
     // TODO: refactor
     return {
       toastCount:0,
@@ -149,11 +149,11 @@
         ]
     };
   },
- beforeMount:function() {
+ beforeMount:function beforeMount() {
     if (!this.loadedLC)
       this.loadLineChart();
   },
- mounted:function() {
+ mounted:function mounted() {
     this.fillData();
     this.ShowTop=true;
   },
@@ -168,8 +168,8 @@
     },
   },
   methods: {
-   $pdqbreak: function() {debugger;},
-   makeToast:function(append) {
+   $pdqBreak:function $pdqBreak() {debugger;},
+   makeToast:function makeToast(append) {
       this.toastCount++;
       this.$bvToast.toast(`This is toast number ${this.toastCount}`, {
         title: 'BootstrapVue Toast',
@@ -177,10 +177,10 @@
         appendToast: append
       });
     },
-   log:function() {
+   log:function log() {
       puts("LOG");
     },
-   fillData:function() {
+   fillData:function fillData() {
       this.datacollection = {
         labels: [this.getRandomInt(), this.getRandomInt()],
         datasets: [
@@ -196,26 +196,26 @@
           ]
         };
     },
-   getRandomInt:function() {
+   getRandomInt:function getRandomInt() {
       return Math.floor(Math.random() * (50 - 5 + 1)) + 5;
     },
     
-   loadLineChart:function() {
+   loadLineChart:function loadLineChart() {
       Vue.component('line-chart', {
         extends: VueChartJs.Line,
         mixins: [VueChartJs.mixins.reactiveProp],
         props: ['chart-data', 'options'],
-       mounted:function() {
+       mounted:function mounted() {
           this.renderChart(this.chartData, this.options);
         }
       });
       this.loadedLC = true;
     },
-    changedTab:function(tids) {
+    changedTab:function changedTab(tids) {
       puts('tids', tids);
       this.v_tabTitle = tids[0].title;
     },
-    inputTab:function(tid) {
+    inputTab:function inputTab(tid) {
       puts('tid', tid);
       var my = this.$refs.mytabs;
       this.v_tabTitle = my.tabs[tid].title;
@@ -237,7 +237,7 @@ Pdq.subcomponent("-top-nav",{template:`
 `
 ,
   methods: {
-    $pdqbreak: function() {debugger;},
+    $pdqBreak:function $pdqBreak() {debugger;},
   },
 
 });
@@ -253,7 +253,7 @@ Pdq.subcomponent("demo_tabs-main-subslot",{template:`
 `
 ,
   methods: {
-    $pdqbreak: function() {debugger;},
+    $pdqBreak:function $pdqBreak() {debugger;},
   },
 });
 
