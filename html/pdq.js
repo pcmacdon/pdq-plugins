@@ -6,8 +6,8 @@
   Vue.component("prism-editor", VuePrismEditor);
   Vue.use(VueMarkdownPdq);
   
-  //function dputs() {}
-  var dputs = console.log.bind(null);
+  function dputs() {}
+  //var dputs = console.log.bind(null);
   
   var Pdq = {
     Plugins:{},
